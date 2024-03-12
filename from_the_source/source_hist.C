@@ -28,10 +28,8 @@ void source_hist()
    {
     for(int AS=lightisotop[ZS]; AS<=heavyisotop[ZS]; AS++)
       {
-      //int AS = 18;
-      //int ZS = 10;
          stringstream tmpname;
-         tmpname <<"../"<<AS<<names[ZS]<<".root";
+         tmpname <<"../rooty/"<<AS<<names[ZS]<<".root";
          string tmp_name = tmpname.str();
          const char *name =(char*) tmp_name.c_str();  
          TFile *file;

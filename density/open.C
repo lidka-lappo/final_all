@@ -1,5 +1,3 @@
-//3d histogram NZE
-
 typedef std::basic_string < char, std::char_traits < char >, std::allocator < char >> MojString;
 
 
@@ -19,38 +17,29 @@ Int_t lightisotop[100] = {0, 1, 3, 3, 5, 6, 8, 10, 11, 13, 15, 17, 19, 21, 22, 2
 Int_t heavyisotop[100] = {0, 7, 10, 13, 16, 21, 23, 25, 28, 31, 34, 39, 41, 43, 45, 47, 49, 52, 54, 59, 61, 63, 65, 67, 70, 73, 76, 78, 82, 84, 86, 88, 90, 92, 95, 98, 101, 104, 107, 109, 113, 116, 119, 122, 125, 128, 131, 133, 135, 137, 140, 142, 145, 147, 150, 152, 154, 157, 159, 161, 163, 165, 168, 170, 172, 174, 176, 178, 180, 182, 185, 188, 190, 194, 197, 199, 203, 205, 208, 210, 216, 218, 220, 224, 227, 229, 231, 233, 235, 237, 239, 241, 243, 245, 247, 249, 252, 254, 256, 258};
 
 
-
-void source_fast()
+void open()
 {
-   ofstream file2("output.txt");
-   for(int ZS=1; ZS<100; ZS++)
-   {
-    for(int AS=lightisotop[ZS]; AS<=heavyisotop[ZS]; AS++)
-      {
-      //int AS = 18;
-      //int ZS = 10;
-         stringstream tmpname;
-         tmpname <<"../rooty/"<<AS<<names[ZS]<<".root";
-         string tmp_name = tmpname.str();
-         const char *name =(char*) tmp_name.c_str();  
-         TFile *file;
-         cout<<"Reading File : "<<name<<endl;
-         cout<<endl;
-         file = TFile::Open(name);
+	//////////////////////////////////////////////////////////////////////////
+	
+			Int_t ZZ = 8;
+			Int_t AA = 16;
+			stringstream tmpname;
+			tmpname <<"../from_the_source/target"<<names[ZZ]<<AA<<".root";
+			string tmp_name = tmpname.str();
+			const char *name =(char*) tmp_name.c_str();	
+			TFile *file;
+			cout<<"Reading File : "<<name<<endl;
+			cout<<endl;
+			file = TFile::Open(name);
+			if (!file || file->IsZombie()) { delete file; cout <<"There is no such isotop"<<endl;} //precaution
+			else {
+				cout <<"OK"<<endl;
+				TH3D *ZNE;
+				ZNE = (TH3D*)file->Get("Z:N")->Clone();
+				TH2D * hist;
+				hist = ZNE->Project3DProfile("xy");
+				hist->Draw("colz");
+			}
 
-         if (!file || file->IsZombie()) { 
-		 delete file; 
-		 cout <<"There is no such isotop"<<endl;  //precaution
-		 file2<<AS<<names[ZS]<<".root"<<endl;
-	 }
-	 else {
-            delete file;
-            }
-
-
-
-      }
-   }
- 
 
 }

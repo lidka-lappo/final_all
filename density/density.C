@@ -41,7 +41,7 @@ void density()
 		for(int AA=lightisotop[ZZ]; AA<=heavyisotop[ZZ]; AA++)
 		{
 			stringstream tmpname;
-			tmpname <<"../from_the_target/target"<<names[ZZ]<<AA<<".root";
+			tmpname <<"../from_the_source/target"<<names[ZZ]<<AA<<".root";
 			string tmp_name = tmpname.str();
 			const char *name =(char*) tmp_name.c_str();	
 			TFile *file;
@@ -51,8 +51,10 @@ void density()
 			if (!file || file->IsZombie()) { delete file; cout <<"There is no such isotop"<<endl;} //precaution
 			else {
 				cout <<"OK"<<endl;
+				TH3D *ZNE;
+				ZNE = (TH3D*)file->Get("Z:N")->Clone();
 				TH2D * hist;
-				hist = (TH2D*)file->Get("N:Z")->Clone();
+				hist = ZNE->Project3DProfile("xy");
 				int NN = AA-ZZ;
 				int f1 = hist->GetBinContent(NN, ZZ-1);
 				f_ZZ->Fill(ZZ, f1);
@@ -70,6 +72,11 @@ void density()
 
 				//if(f!=0)
 				//	cout<<N <<" : "<< f<<endl;
+
+
+				delete ZNE;
+				delete hist;
+				delete file;
 			}
 		}
 	}
@@ -110,11 +117,13 @@ void density()
   legend->AddEntry(f_ZN, "f(N->N-1)","p");
   legend->Draw();
 	
-	/*TFile *file1 = new TFile(name1, "RECREATE");
+	TFile *file1 = new TFile(name1, "RECREATE");
 	file1->cd();
 	f_ZZ->Write();
+	f_ZA->Write();
+	f_ZN->Write();
 	file1->Write();
-*/
+
   
 
 	stringstream tmpname2;
@@ -155,11 +164,13 @@ void density()
   legend1->Draw();
 
 
-/*	TFile *file2 = new TFile(name2, "RECREATE");
+	TFile *file2 = new TFile(name2, "RECREATE");
 	file2->cd();
 	f_AA->Write();
+	f_AZ->Write();
+	f_AN->Write();
 	file2->Write();
-*/
+
 
 	stringstream tmpname3;
 	tmpname3<<"DensityN_N1.root";
@@ -197,11 +208,13 @@ void density()
   legend2->AddEntry(f_NN, "f(N->N-1)","p");
   legend2->Draw();
 
-	/*TFile *file3= new TFile(name3, "RECREATE");
+	TFile *file3= new TFile(name3, "RECREATE");
 	file3->cd();
 	f_NN->Write();
+	f_NZ->Write();
+	f_NA->Write();
 	file3->Write();
-*/
+
 
 	TCanvas *c4 = new TCanvas("density2D","density2D",1500,1100);
 	gStyle->SetOptStat(11);
@@ -229,9 +242,9 @@ void density()
 
    
 
-   /*c->SaveAs("densityZ.png");
+   c->SaveAs("densityZ.png");
 	 c2->SaveAs("densityA.png");
 	 c3->SaveAs("densityN.png");
-   c4->SaveAs("3Ddensity.png");*/
+   c4->SaveAs("3Ddensity.png");
 
 }
