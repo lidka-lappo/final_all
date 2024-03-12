@@ -62,7 +62,25 @@ void n_pion_hist()
             
                TTree *t = (TTree*)file->Get("fNtuple");
                //creating histogram
-               TH3* ZN = new TH3D("Z:N", "Z:N", 150, 0, 150, 150, 0, 150, 10, 0, 10);
+               TH3* ZNP0 = new TH3D("Z:N:P0", "Z:N:P0", 150, 0, 150, 150, 0, 150, 10, 0, 10);
+               TH3* ZNPM = new TH3D("Z:N:P-", "Z:N:P-", 150, 0, 150, 150, 0, 150, 10, 0, 10);
+               TH3* ZNPP = new TH3D("Z:N:P+", "Z:N:P+", 150, 0, 150, 150, 0, 150, 10, 0, 10);
+               TH3* ZNK0 = new TH3D("Z:N:K0", "Z:N:K0", 150, 0, 150, 150, 0, 150, 10, 0, 10);
+               TH3* ZNKM = new TH3D("Z:N:K-", "Z:N:K-", 150, 0, 150, 150, 0, 150, 10, 0, 10);
+               TH3* ZNKP = new TH3D("Z:N:K+", "Z:N:K+", 150, 0, 150, 150, 0, 150, 10, 0, 10);
+               TH3* ZNel = new TH3D("Z:N:el", "Z:N:el", 150, 0, 150, 150, 0, 150, 100, 0, 100);
+               TH3* ZNgamma = new TH3D("Z:N:gamma", "Z:N:gamma", 150, 0, 150, 150, 0, 150, 100, 0, 100);
+               
+               TH3* ZNn = new TH3D("Z:N:n", "Z:N:n", 150, 0, 150, 150, 0, 150, 20, 0, 20);
+               TH3* ZNp = new TH3D("Z:N:p", "Z:N:p", 150, 0, 150, 150, 0, 150, 20, 0, 20);
+               TH3* ZNdeut = new TH3D("Z:N:deut", "Z:N:deut", 150, 0, 150, 150, 0, 150, 10, 0, 10);
+               TH3* ZNtryt = new TH3D("Z:N:tryt", "Z:N:tryt", 150, 0, 150, 150, 0, 150, 10, 0, 10);
+               TH3* ZNHe3 = new TH3D("Z:N:He3", "Z:N:He3", 150, 0, 150, 150, 0, 150, 10, 0, 10);
+               TH3* ZNalpha = new TH3D("Z:N:alpha", "Z:N:alpha", 150, 0, 150, 150, 0, 150, 20, 0, 20);
+               TH3* ZNfrag = new TH3D("Z:N:frag", "Z:N:frag", 150, 0, 150, 150, 0, 150, 20, 0, 20);
+               
+
+
                Double_t ID, Z,A, N, E, Q, T;
                Char_t name[10];
                Char_t type[10];
@@ -91,7 +109,21 @@ void n_pion_hist()
                      if(A>4 && Z>2 && N>=0)
                      { 
                      //if(E<100)
-                      ZN->Fill((A-Z), Z, pion0);
+                      ZNP0->Fill((A-Z), Z, pion0);
+                      ZNPP->Fill((A-Z), Z, pionp);
+                      ZNPM->Fill((A-Z), Z, pionm);
+                      ZNK0->Fill((A-Z), Z, kaon0);
+                      ZNKM->Fill((A-Z), Z, kaonm);
+                      ZNKP->Fill((A-Z), Z, kaonp);
+                      ZNgamma->Fill((A-Z), Z, gammas);
+                      ZNel->Fill((A-Z), Z, electrons);
+                      ZNp->Fill((A-Z), Z, proton);
+                      ZNn->Fill((A-Z), Z, neutron);
+                      ZNdeut->Fill((A-Z), Z, deuteron);
+                      ZNtryt->Fill((A-Z), Z, triton);
+                      ZNHe3->Fill((A-Z), Z, He3);
+                      ZNalpha->Fill((A-Z), Z, alpha);
+                      ZNfrag->Fill((A-Z), Z, fragments);
                      }
 
                   }
@@ -101,14 +133,28 @@ void n_pion_hist()
                }
 
                stringstream tmpname1;
-               tmpname1 <<"pions0"<<names[ZS]<<AS<<".root";
+               tmpname1 <<"pions"<<names[ZS]<<AS<<".root";
 
                string tmp_name1 = tmpname1.str();
                const char *name1 =(char*) tmp_name1.c_str();
 
                TFile *file2 = new TFile(name1, "RECREATE");
                file2->cd();
-               ZN->Write();
+               ZNP0->Write();
+               ZNPP->Write();
+               ZNPM->Write();
+               ZNK0->Write();
+               ZNKP->Write();
+               ZNKM->Write();
+               ZNel->Write();
+               ZNgamma->Write();
+               ZNn->Write();
+               ZNp->Write();
+               ZNdeut->Write();
+               ZNtryt->Write();
+               ZNHe3->Write();
+               ZNalpha->Write();
+               ZNfrag->Write();
                file2->Write();
 
                delete ZN;
