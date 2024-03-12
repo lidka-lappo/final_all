@@ -21,10 +21,10 @@ Int_t heavyisotop[100] = {0, 7, 10, 13, 16, 21, 23, 25, 28, 31, 34, 39, 41, 43, 
 
 
 
-void source_hist()
+void n_pion_hist()
 {
 
-   for(int ZS=1; ZS<100; ZS++)
+   for(int ZS=8; ZS<9; ZS++)
    {
     for(int AS=lightisotop[ZS]; AS<=heavyisotop[ZS]; AS++)
       {
@@ -88,7 +88,7 @@ void source_hist()
                   for(Int_t j = 0; j < tmp_offset; j++)
                   {
                      t->GetEntry(j+offset);
-                     if(A>0 && Z>0 && N>=0)
+                     if(A>4 && Z>2 && N>=0)
                      { 
                      //if(E<100)
                       ZN->Fill((A-Z), Z, pion0);
