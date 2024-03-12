@@ -157,8 +157,24 @@ void n_pion_hist()
                ZNfrag->Write();
                file2->Write();
 
-               delete ZN;
-               delete t;
+               delete ZNP0;
+               delete ZNPP;
+               delete ZNPM;
+               delete ZNK0;
+               delete ZNKP;
+               delete ZNKM;
+               delete ZNel;
+               delete ZNgamma;
+               delete ZNn;
+               delete ZNp;
+               delete ZNdeut;
+               delete ZNtryt;
+               delete ZNHe3;
+               delete ZNalpha;
+               delete ZNfrag;
+               
+	       delete t;
+               delete tC;
                delete file2;
                delete file;
             }
