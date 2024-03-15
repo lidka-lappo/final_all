@@ -32,7 +32,7 @@ void density()
 	TH1D *f_NN=new TH1D("f_NN", "f_NN", 160, 0, 160);
 	TH1D *f_ZN=new TH1D("f_ZN", "f_ZN", 110, 0, 110);
 
-	TH2D *f_ZN_N=new TH2D("f_ZN_N", "f_ZN_N", 110, 0, 110, 160, 0 , 160);
+TH2D *f_ZN_N=new TH2D("f_ZN_N", "f_ZN_N", 110, 0, 110, 160, 0 , 160);
   TH2D *f_ZN_Z=new TH2D("f_ZN_Z", "f_ZN_Z", 110, 0, 110, 160, 0 , 160);
   TH2D *f_ZN_A=new TH2D("f_ZN_A", "f_ZN_A", 110, 0, 110, 160, 0 , 160);
 
@@ -54,8 +54,24 @@ void density()
 				TH3D *ZNE;
 				ZNE = (TH3D*)file->Get("Z:N")->Clone();
 				TH2D * hist;
-				hist = ZNE->Project3DProfile("xy");
+
+
+				//hist = ZNE->Project3DProfile("xy");
 				int NN = AA-ZZ;
+
+				for (int zbin = 0; zbin < 150; zbin++) {
+				    for (int nbin = 0; nbin < 150; nbin++) {
+				        for (int ebin = 0; ebin < 800; ebin++) {
+				            // Check if the energy value is less than 100
+				            //if (hist3D->GetZaxis()->GetBinCenter(ebin) < 1) {
+				                // Fill the 2D histogram with Z and N values
+				                hist->Fill(zbin-1, nbin-1, ZNE->GetBinContent(zbin+1, nbin+1, ebin));
+				            //}
+				        }
+				    }
+				}
+
+
 				int f1 = hist->GetBinContent(NN, ZZ-1);
 				f_ZZ->Fill(ZZ, f1);
 				f_AZ->Fill(AA, f1);
@@ -237,14 +253,14 @@ void density()
   f_ZN_N->SetMarkerStyle(20);
 
   f_ZN_Z->Draw("SURF");
-  f_ZN_Z->Draw("SAME");
-  f_ZN_Z->Draw("SAME");
+  f_ZN_Z->Draw("SURF SAME");
+  f_ZN_Z->Draw("SURF SAME");
 
    
 
    c->SaveAs("densityZ.png");
-	 c2->SaveAs("densityA.png");
-	 c3->SaveAs("densityN.png");
+   c2->SaveAs("densityA.png");
+   c3->SaveAs("densityN.png");
    c4->SaveAs("3Ddensity.png");
 
 }
