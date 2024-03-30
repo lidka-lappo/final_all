@@ -24,7 +24,7 @@ Int_t heavyisotop[100] = {0, 7, 10, 13, 16, 21, 23, 25, 28, 31, 34, 39, 41, 43, 
 void n_pion_hist()
 {
 
-   for(int ZS=8; ZS<9; ZS++)
+   for(int ZS=1; ZS<100; ZS++)
    {
     for(int AS=lightisotop[ZS]; AS<=heavyisotop[ZS]; AS++)
       {

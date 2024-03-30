@@ -51,9 +51,9 @@ TH2D *f_ZN_N=new TH2D("f_ZN_N", "f_ZN_N", 110, 0, 110, 160, 0 , 160);
 			if (!file || file->IsZombie()) { delete file; cout <<"There is no such isotop"<<endl;} //precaution
 			else {
 				cout <<"OK"<<endl;
-				TH3D *ZNE;
-				ZNE = (TH3D*)file->Get("Z:N")->Clone();
-				TH2D * hist;
+				TH3D *hist3D;
+				hist3D = (TH3D*)file->Get("Z:N")->Clone();
+				TH2D *hist = new TH2D("hist2D", "hist", hist3D->GetNbinsX(), hist3D->GetXaxis()->GetXmin(), hist3D->GetXaxis()->GetXmax(), hist3D->GetNbinsY(), hist3D->GetYaxis()->GetXmin(), hist3D->GetYaxis()->GetXmax());
 
 
 				//hist = ZNE->Project3DProfile("xy");
@@ -65,7 +65,7 @@ TH2D *f_ZN_N=new TH2D("f_ZN_N", "f_ZN_N", 110, 0, 110, 160, 0 , 160);
 				            // Check if the energy value is less than 100
 				            //if (hist3D->GetZaxis()->GetBinCenter(ebin) < 1) {
 				                // Fill the 2D histogram with Z and N values
-				                hist->Fill(zbin-1, nbin-1, ZNE->GetBinContent(zbin+1, nbin+1, ebin));
+				                hist->Fill(zbin, nbin, hist3D->GetBinContent(zbin+1, nbin+1, ebin));
 				            //}
 				        }
 				    }
@@ -90,7 +90,7 @@ TH2D *f_ZN_N=new TH2D("f_ZN_N", "f_ZN_N", 110, 0, 110, 160, 0 , 160);
 				//	cout<<N <<" : "<< f<<endl;
 
 
-				delete ZNE;
+				delete hist3D;
 				delete hist;
 				delete file;
 			}

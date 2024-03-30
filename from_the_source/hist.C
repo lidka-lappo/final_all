@@ -14,7 +14,7 @@ void hist()
 	//CHOOSE ISOTOP
 	//////////////////////////////////////////////////////////////////////////	
 	int ZZ = 50;
-	int AA = 100;
+	int AA = 102;
 	//////////////////////////////////////////////////////////////////////////
 	//which isotop is the goal, change ZZ and AA accordingly 
 	stringstream tmpname;
@@ -48,7 +48,7 @@ void hist()
 		}
 
 
-
+/*
 		TCanvas *c = new TCanvas(name,name,1500,1100);
 		gStyle->SetOptStat(11);
 		c->SetLogz();
@@ -58,8 +58,18 @@ void hist()
 		hist->GetXaxis()->SetNdivisions(150); 
 		hist->GetYaxis()->SetNdivisions(150); 
 		hist->SetTitle(name);
-		hist->Draw("colz");
-		gPad->Update();
+	//	hist->Draw("colz");
+	//	gPad->Update();
+*/
+	 	stringstream tmpname1;
+               tmpname1 <<"2Dfragments"<<names[ZZ]<<AA<<".root";
+
+               string tmp_name1 = tmpname1.str();
+               const char *name1 =(char*) tmp_name1.c_str();
+		TFile *file2 = new TFile(name1, "RECREATE");
+                file2->cd();
+		hist->Write();
+
 		//TPaveStats *st = (TPaveStats*)hist->FindObject("stats");
 	}
 }

@@ -1,5 +1,6 @@
 *.root
-
+*.jpg
+*.pdf
 # Compiled source #
 ###################
 *.com

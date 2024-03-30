@@ -38,7 +38,14 @@ void open()
 				ZNE = (TH3D*)file->Get("Z:N")->Clone();
 				TH2D * hist;
 				hist = ZNE->Project3DProfile("xy");
+				
+				TCanvas *c4 = new TCanvas("test","test",1500,1100);
 				hist->Draw("colz");
+				c4->SaveAs("test.png");
+				TFile *file1 = new TFile("test.root", "RECREATE");
+				file1->cd();
+				hist->Write();
+				file1->Write();
 			}
 
 

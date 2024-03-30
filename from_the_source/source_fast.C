@@ -22,7 +22,8 @@ Int_t heavyisotop[100] = {0, 7, 10, 13, 16, 21, 23, 25, 28, 31, 34, 39, 41, 43, 
 
 void source_fast()
 {
-   ofstream file2("output.txt");
+   ofstream file2("missing_list.txt");
+   //ofstream file2("output.txt");
    for(int ZS=1; ZS<100; ZS++)
    {
     for(int AS=lightisotop[ZS]; AS<=heavyisotop[ZS]; AS++)
@@ -30,7 +31,8 @@ void source_fast()
       //int AS = 18;
       //int ZS = 10;
          stringstream tmpname;
-         tmpname <<"../rooty/"<<AS<<names[ZS]<<".root";
+        // tmpname <<"../rooty/"<<AS<<names[ZS]<<".root";
+ 	 tmpname<<"target"<<names[ZS]<<AS<<".root";
          string tmp_name = tmpname.str();
          const char *name =(char*) tmp_name.c_str();  
          TFile *file;
