@@ -24,7 +24,7 @@ Int_t heavyisotop[100] = {0, 7, 10, 13, 16, 21, 23, 25, 28, 31, 34, 39, 41, 43, 
 void source_hist()
 {
 
-   for(int ZS=59; ZS<100; ZS++)
+   for(int ZS=50; ZS<100; ZS++)
    {
     for(int AS=lightisotop[ZS]; AS<=heavyisotop[ZS]; AS++)
       {
