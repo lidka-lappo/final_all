@@ -38,7 +38,7 @@ void product_hist()
                   //  int ZS = 82;
                   // int AS = 198;
                   stringstream tmpname;
-                  tmpname <<"../from_the_source/target"<<names[ZS]<<AS<<".root";
+                  tmpname <<"../from_the_source/2Dfragments"<<names[ZS]<<AS<<".root";
                   string tmp_name = tmpname.str();
                   const char *name =(char*) tmp_name.c_str();  
                   TFile *file;
@@ -50,7 +50,7 @@ void product_hist()
                   else {
 
                         TH2D* hist;
-                        hist = (TH2D*)file->Get("Z:N")->Clone();;
+                        hist = (TH2D*)file->Get("hist2D")->Clone();;
                         int ilefragmentu = hist->GetBinContent((AA-ZZ), ZZ);
                      
                         if(ilefragmentu!=0)
