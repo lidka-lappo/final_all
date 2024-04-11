@@ -12,7 +12,7 @@ TString names[100] = {"empty",
            "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", 
            "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", 
            "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es"};
-void fewisotopscharts()
+void few_same_elemet_charts()
 {
 
 	//CHOOSE ISOTOP
@@ -20,20 +20,16 @@ void fewisotopscharts()
 	//////////////////////////////////////////////////////////////////////////	
 	//int ZZ = 13;
 	//int AA = 24;
-	int n =10; //ile isotopow//41
-
+	int n =14; //ile isotopow//41
+	int ZZ = 8; 
 	
-	int empty[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-	int ZZ[10] = {7, 8, 29, 50, 53, 53, 53, 53, 84, 90 }; 
-	int AA[10] = {14, 16, 65, 100, 123, 125, 129, 131, 209, 229};
-
-
-	//= 99//-140; //41
-	/*for(int i=0; i<n; i++)
+	int empty[n];
+	int AA[n]; //= 99//-140; //41
+	for(int i=0; i<n; i++)
 	{
 		AA[i]=i+12;
 		empty[i]=0;
-	}*/
+	}
 
 	//AA[0] = 120;
 	//AA[1] = 135;
@@ -48,7 +44,7 @@ void fewisotopscharts()
 	for(int i=0; i<n; i++)
 	{
 		stringstream tmpfoldername;
-		tmpfoldername <<"../from_the_source/2Dfragments"<<names[ZZ[i]]<<AA[i]<<".root";
+		tmpfoldername <<"../to_the_product/ZNproduct"<<names[ZZ]<<AA[i]<<".root";
 		string tmp_folder_name = tmpfoldername.str();
 		const char *folder_name =(char*) tmp_folder_name.c_str();	
 		TFile *file;
@@ -60,14 +56,14 @@ void fewisotopscharts()
 			cout <<"OK"<<endl;
 
 			TH2D* hist;
-			hist = (TH2D*)file->Get("hist2D")->Clone();
+			hist = (TH2D*)file->Get("Z:N")->Clone();
 			//hist->Draw("colz");	
 			stringstream iso;
-			iso<<names[ZZ[i]]<<AA[i];
+			iso<<names[ZZ]<<AA;
 			string tmp_iso = iso.str();
 			const char *isotop =(char*) tmp_iso.c_str();
 
-			f_A[i]=new TH1D(isotop, isotop, 260, 1, 260);
+			f_A[i]=new TH1D(isotop, isotop, 180,80, 260);
 			f_N[i] = hist->ProjectionX();
 			f_Z[i] = hist->ProjectionY();
 			//f_N[i]->Draw("colz");
@@ -88,12 +84,12 @@ void fewisotopscharts()
 	}
 	
 	stringstream tmpname1;
-	tmpname1<<names[ZZ[0]]<<" :f(Z_in)";
+	tmpname1<<names[ZZ]<<" :f(Z_in)";
 	string tmp_name1 = tmpname1.str();
 	const char *name1 =(char*) tmp_name1.c_str();	
 
 	TCanvas *c = new TCanvas(name1,name1,1500,1100);
-	gStyle->SetOptStat(0);
+	gStyle->SetOptStat(11);
 	c->SetLogz();
 	c->SetGrid();
 	
@@ -109,11 +105,11 @@ void fewisotopscharts()
 	f_Z[0]->Draw("HIST PL");
 
 	stringstream iso;
-	iso<<names[ZZ[0]]<<AA[0];
+	iso<<names[ZZ]<<AA[0];
 	string tmp_iso = iso.str();
 	const char *isotop =(char*) tmp_iso.c_str();
 
-	auto legend1 = new TLegend(0.1,0.9,0.2,1);
+	auto legend1 = new TLegend(0.1,0.1,0.2,0.9);
     	legend1->SetHeader("Isotops: ","C"); // option "C" allows to center the header
     	legend1->AddEntry(f_Z[0],isotop,"p");
 	for(int i=1; i<n; i++)
@@ -127,7 +123,7 @@ void fewisotopscharts()
 			f_Z[i]->Draw("HIST SAME PL");
 
 			stringstream iso1;
-			iso1<<names[ZZ[i]]<<AA[i];
+			iso1<<names[ZZ]<<AA[i];
 			string tmp_iso1 = iso1.str();
 			const char *isotop1 =(char*) tmp_iso1.c_str();
 	
@@ -138,12 +134,12 @@ void fewisotopscharts()
 
 
 	stringstream tmpname2;
-	tmpname2<<names[ZZ[0]]<<" :f(A_in)";
+	tmpname2<<names[ZZ]<<" :f(A_in)";
 	string tmp_name2 = tmpname2.str();
 	const char *name2 =(char*) tmp_name2.c_str();		
 
 	TCanvas *c2 = new TCanvas(name2,name2,1500,1100);
-	gStyle->SetOptStat(0);
+	gStyle->SetOptStat(11);
 	c2->SetLogz();
 	c2->SetGrid();
 	f_A[0]->GetXaxis()->SetTitle("A_in");
@@ -157,7 +153,7 @@ void fewisotopscharts()
 	f_A[0]->SetTitle(name2);
 	f_A[0]->Draw("HIST PL");
 
-	auto legend2 = new TLegend(0.1,0.9,0.2,1);
+	auto legend2 = new TLegend(0.1,0.1,0.2,0.9);
   	legend2->SetHeader("Isotops: ","C"); // option "C" allows to center the header
   	legend2->AddEntry(f_A[0],isotop,"p");
 	for(int i=1; i<n; i++)
@@ -171,7 +167,7 @@ void fewisotopscharts()
 			f_A[i]->Draw("HIST SAME PL");
 
 			stringstream iso1;
-			iso1<<names[ZZ[i]]<<AA[i];
+			iso1<<names[ZZ]<<AA[i];
 			string tmp_iso1 = iso1.str();
 			const char *isotop1 =(char*) tmp_iso1.c_str();
 
@@ -183,13 +179,13 @@ void fewisotopscharts()
 
 
 	stringstream tmpname3;
-	tmpname3<<names[ZZ[0]]<<"f(N_in)";
+	tmpname3<<names[ZZ]<<"f(N_in)";
 
 	string tmp_name3 = tmpname3.str();
 	const char *name3 =(char*) tmp_name3.c_str();		
 
 	TCanvas *c3 = new TCanvas(name3,name3,1500,1100);
-	gStyle->SetOptStat(0);
+	gStyle->SetOptStat(11);
 	c3->SetLogz();
 	c3->SetGrid();
 	f_N[0]->GetXaxis()->SetTitle("N_in");
@@ -202,7 +198,7 @@ void fewisotopscharts()
 	f_N[0]->SetMarkerStyle(20);
 	f_N[0]->SetTitle(name3);
 	f_N[0]->Draw("HIST PL");
-	auto legend3 = new TLegend(0.1,0.9,0.2,1);
+	auto legend3 = new TLegend(0.1,0.1,0.2,0.9);
     	legend3->SetHeader("Isotops: ","C"); // option "C" allows to center the header
     	legend3->AddEntry(f_N[0],isotop,"p");
 	for(int i=1; i<n; i++)
@@ -216,7 +212,7 @@ void fewisotopscharts()
 			f_N[i]->Draw("HIST SAME PL");
 
 			stringstream iso1;
-			iso1<<names[ZZ[i]]<<AA[i];
+			iso1<<names[ZZ]<<AA[i];
 			string tmp_iso1 = iso1.str();
 			const char *isotop1 =(char*) tmp_iso1.c_str();
 			legend3->AddEntry(f_N[i],isotop1,"p");

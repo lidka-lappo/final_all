@@ -21,9 +21,9 @@ void charts()
 	//////////////////////////////////////////////////////////////////////////	
 	//int ZZ = 13;
 	//int AA = 24;
-	int ZZ = 78;
-	int AA = 170;
-	int OUT = 1;
+	int ZZ = 8;
+	int AA = 16;
+	int OUT = 0;
 	//change 0 if IN, 1 if OUT
 	//////////////////////////////////////////////////////////////////////////
 	
@@ -32,7 +32,10 @@ void charts()
 	if(OUT)
 		tmpname <<"../to_the_product/ZNproduct"<<names[ZZ]<<AA<<".root";
 	else
-		tmpname <<"../from_the_target/target"<<names[ZZ]<<AA<<".root";
+	{
+		//tmpname <<"../from_the_source/target"<<names[ZZ]<<AA<<".root";
+		tmpname <<"../from_the_source/2Dfragments"<<names[ZZ]<<AA<<".root";
+	}
 	string tmp_name = tmpname.str();
 	const char *name =(char*) tmp_name.c_str();	
 	TFile *file;
@@ -45,13 +48,13 @@ void charts()
 		}
 
 	TH2D * hist;
-	hist = (TH2D*)file->Get("Z:N")->Clone();
+	hist = (TH2D*)file->Get("hist2D")->Clone();
 
 	TH1D *f_Z = hist->ProjectionY();
 	TH1D *f_N = hist->ProjectionX();
 	TH1D *f_A=new TH1D("f_N", "f_N", 150, 0, 150);
 	
-		for(int Z=1; Z<150; Z++)
+		for(int Z=0; Z<150; Z++)
 		{
 			for(int N=0; N<150; N++)
 			{
@@ -94,14 +97,15 @@ void charts()
 	f_Z->Write();
 	file1->Write();
 
-
+stringstream tmpname2;
 	if(OUT)
-		tmpname1<<"Frequency of formation: "<<names[ZZ]<<AA<<" dependent from target A.root";
+		tmpname2<<"Frequency of formation: "<<names[ZZ]<<AA<<" dependent from target A.root";
 	else
-		tmpname1<<"Frequency of formation: "<<names[ZZ]<<AA<<" dependent from product A.root";
+		tmpname2<<"Frequency of formation: "<<names[ZZ]<<AA<<" dependent from product A.root";
 
 	string tmp_name2 = tmpname2.str();
-	const char *name2 =(char*) tmp_name2.c_str();		
+	const char *name2 =(char*) tmp_name2.c_str();	
+
 
 	TCanvas *c2 = new TCanvas(name2,name2,1500,1100);
 	gStyle->SetOptStat(11);
@@ -129,9 +133,9 @@ void charts()
 
 	stringstream tmpname3;
 	if(OUT)
-		tmpname1<<"Frequency of formation: "<<names[ZZ]<<AA<<" dependent from target N.root";
+		tmpname3<<"Frequency of formation: "<<names[ZZ]<<AA<<" dependent from target N.root";
 	else
-		tmpname1<<"Frequency of formation: "<<names[ZZ]<<AA<<" dependent from product N.root";
+		tmpname3<<"Frequency of formation: "<<names[ZZ]<<AA<<" dependent from product N.root";
 
 	string tmp_name3 = tmpname3.str();
 	const char *name3 =(char*) tmp_name3.c_str();		
