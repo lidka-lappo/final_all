@@ -20,28 +20,28 @@ Int_t heavyisotop[100] = {0, 7, 10, 13, 16, 21, 23, 25, 28, 31, 34, 39, 41, 43, 
 void density()
 {
 	//////////////////////////////////////////////////////////////////////////
-	TH1D *f_AZ=new TH1D("f_AZ", "f_AZ", 260, 0, 260);
-	TH1D *f_NZ=new TH1D("f_NZ", "f_NZ", 160, 0, 160);
-	TH1D *f_ZZ=new TH1D("f_ZZ", "f_ZZ", 110, 0, 110);
+	TH1D *f_AZ=new TH1D("f_AZ", "f_AZ", 256, 0, 256);
+	TH1D *f_NZ=new TH1D("f_NZ", "f_NZ", 155, 0, 155);
+	TH1D *f_ZZ=new TH1D("f_ZZ", "f_ZZ", 101, 0, 101);
 
-	TH1D *f_AA=new TH1D("f_AA", "f_AA", 260, 0, 260);
-	TH1D *f_NA=new TH1D("f_NA", "f_NA", 160, 0, 160);
-	TH1D *f_ZA=new TH1D("f_ZA", "f_ZA", 110, 0, 110);
+	TH1D *f_AA=new TH1D("f_AA", "f_AA", 256, 0, 256);
+	TH1D *f_NA=new TH1D("f_NA", "f_NA", 155, 0, 155);
+	TH1D *f_ZA=new TH1D("f_ZA", "f_ZA", 101, 0, 101);
 
-	TH1D *f_AN=new TH1D("f_AN", "f_AN", 260, 0, 260);
-	TH1D *f_NN=new TH1D("f_NN", "f_NN", 160, 0, 160);
-	TH1D *f_ZN=new TH1D("f_ZN", "f_ZN", 110, 0, 110);
+	TH1D *f_AN=new TH1D("f_AN", "f_AN", 256, 0, 256);
+	TH1D *f_NN=new TH1D("f_NN", "f_NN", 155, 0, 155);
+	TH1D *f_ZN=new TH1D("f_ZN", "f_ZN", 101, 0, 101);
 
-TH2D *f_ZN_N=new TH2D("f_ZN_N", "f_ZN_N", 110, 0, 110, 160, 0 , 160);
-  TH2D *f_ZN_Z=new TH2D("f_ZN_Z", "f_ZN_Z", 110, 0, 110, 160, 0 , 160);
-  TH2D *f_ZN_A=new TH2D("f_ZN_A", "f_ZN_A", 110, 0, 110, 160, 0 , 160);
+  TH2D *f_ZN_N=new TH2D("f_ZN_N", "f_ZN_N", 160, 0, 160, 110, 0 , 110);
+  TH2D *f_ZN_Z=new TH2D("f_ZN_Z", "f_ZN_Z", 160, 0, 160, 110, 0 , 110);
+  TH2D *f_ZN_A=new TH2D("f_ZN_A", "f_ZN_A", 160, 0, 160, 110, 0 , 110);
 
 	for(int ZZ=1; ZZ<100; ZZ++)
 	{
 		for(int AA=lightisotop[ZZ]; AA<=heavyisotop[ZZ]; AA++)
 		{
 			stringstream tmpname;
-			tmpname <<"../from_the_source/target"<<names[ZZ]<<AA<<".root";
+			tmpname <<"../from_the_source/2Dfragments"<<names[ZZ]<<AA<<".root";
 			string tmp_name = tmpname.str();
 			const char *name =(char*) tmp_name.c_str();	
 			TFile *file;
@@ -51,14 +51,14 @@ TH2D *f_ZN_N=new TH2D("f_ZN_N", "f_ZN_N", 110, 0, 110, 160, 0 , 160);
 			if (!file || file->IsZombie()) { delete file; cout <<"There is no such isotop"<<endl;} //precaution
 			else {
 				cout <<"OK"<<endl;
-				TH3D *hist3D;
-				hist3D = (TH3D*)file->Get("Z:N")->Clone();
-				TH2D *hist = new TH2D("hist2D", "hist", hist3D->GetNbinsX(), hist3D->GetXaxis()->GetXmin(), hist3D->GetXaxis()->GetXmax(), hist3D->GetNbinsY(), hist3D->GetYaxis()->GetXmin(), hist3D->GetYaxis()->GetXmax());
+				TH2D *hist;
+				hist = (TH2D*)file->Get("hist2D")->Clone();
+				//TH2D *hist = new TH2D("hist2D", "hist", hist3D->GetNbinsX(), hist3D->GetXaxis()->GetXmin(), hist3D->GetXaxis()->GetXmax(), hist3D->GetNbinsY(), hist3D->GetYaxis()->GetXmin(), hist3D->GetYaxis()->GetXmax());
 
 
 				//hist = ZNE->Project3DProfile("xy");
 				int NN = AA-ZZ;
-
+/*
 				for (int zbin = 0; zbin < 150; zbin++) {
 				    for (int nbin = 0; nbin < 150; nbin++) {
 				        for (int ebin = 0; ebin < 800; ebin++) {
@@ -70,14 +70,16 @@ TH2D *f_ZN_N=new TH2D("f_ZN_N", "f_ZN_N", 110, 0, 110, 160, 0 , 160);
 				        }
 				    }
 				}
+*/
 
-
-				int f1 = hist->GetBinContent(NN, ZZ-1);
+				Double_t f1 = hist->GetBinContent(NN, ZZ-1);
+				f1=f1/1000000.0;
 				f_ZZ->Fill(ZZ, f1);
 				f_AZ->Fill(AA, f1);
 				f_NZ->Fill(NN, f1);
 
-				int f2 = hist->GetBinContent(NN-1, ZZ);
+				Double_t f2 = hist->GetBinContent(NN-1, ZZ);
+				f2=f2/1000000.0;
 				f_NN->Fill(NN, f2);
 				f_AN->Fill(AA, f2);
 				f_ZN->Fill(ZZ, f2);
@@ -86,11 +88,14 @@ TH2D *f_ZN_N=new TH2D("f_ZN_N", "f_ZN_N", 110, 0, 110, 160, 0 , 160);
 				f_ZA->Fill(ZZ, f1+f2);
 				f_NA->Fill(NN, f1+f2);
 
+				f_ZN_A->Fill(NN, ZZ, f1+f2);
+				f_ZN_N->Fill(NN, ZZ, f2);
+				f_ZN_Z->Fill(NN, ZZ, f1);
 				//if(f!=0)
 				//	cout<<N <<" : "<< f<<endl;
 
 
-				delete hist3D;
+				//delete hist3D;
 				delete hist;
 				delete file;
 			}
@@ -104,7 +109,7 @@ TH2D *f_ZN_N=new TH2D("f_ZN_N", "f_ZN_N", 110, 0, 110, 160, 0 , 160);
 	const char *name1 =(char*) tmp_name1.c_str();	
 
 	TCanvas *c = new TCanvas(name1,name1,1500,1100);
-	gStyle->SetOptStat(11);
+	gStyle->SetOptStat(0);
 	c->SetLogz();
 	c->SetGrid();
 	f_ZZ->GetXaxis()->SetTitle("Z");
@@ -116,17 +121,17 @@ TH2D *f_ZN_N=new TH2D("f_ZN_N", "f_ZN_N", 110, 0, 110, 160, 0 , 160);
 	f_ZZ->SetMarkerSize(1.5);
 	f_ZZ->SetMarkerStyle(20);
 	f_ZA->SetMarkerColor(6);
-  f_ZA->SetMarkerSize(1.5);
-  f_ZA->SetMarkerStyle(20);
+  	f_ZA->SetMarkerSize(1.5);
+  	f_ZA->SetMarkerStyle(20);
 	f_ZN->SetMarkerColor(4);
-  f_ZN->SetMarkerSize(1.5);
-  f_ZN->SetMarkerStyle(20);
+  	f_ZN->SetMarkerSize(1.5);
+  	f_ZN->SetMarkerStyle(20);
 
 	f_ZZ->SetTitle(name1);
 	f_ZZ->Draw("HIST P");
-	f_ZA ->Draw("SAME");
-	f_ZN ->Draw("SAME");
-	auto legend = new TLegend(0.1,0.1,0.2,0.9);
+	f_ZA ->Draw("HIST SAME P");
+	f_ZN ->Draw("HIST SAME P");
+	auto legend = new TLegend(0.1,0.9,0.2,1);
   legend->SetHeader("Frequencies:","C"); // option "C" allows to center the header
   legend->AddEntry(f_ZZ, "f(Z->Z-1)","p");
   legend->AddEntry(f_ZA,"f(A->A-1)","p");
@@ -148,16 +153,14 @@ TH2D *f_ZN_N=new TH2D("f_ZN_N", "f_ZN_N", 110, 0, 110, 160, 0 , 160);
 	string tmp_name2 = tmpname2.str();
 	const char *name2 =(char*) tmp_name2.c_str();		
 
-	TCanvas *c2 = new TCanvas(name2,name2,1500,1100);
-	gStyle->SetOptStat(11);
+	TCanvas *c2 = new TCanvas(name2,name2,3000,1100);
+	gStyle->SetOptStat(0);
 	c2->SetLogz();
 	c2->SetGrid();
 	f_AA->GetXaxis()->SetTitle("A");
 	f_AA->GetYaxis()->SetTitle("f (A-1)");
 	c2->SetLogy();
-	f_AA->GetXaxis()->SetNdivisions(260); 
-
-
+	f_AA->GetXaxis()->SetNdivisions(128); 
 	f_AZ->SetMarkerColor(2);
 	f_AZ->SetMarkerSize(1.5);
 	f_AZ->SetMarkerStyle(20);
@@ -170,9 +173,9 @@ TH2D *f_ZN_N=new TH2D("f_ZN_N", "f_ZN_N", 110, 0, 110, 160, 0 , 160);
 
 	f_AA->SetTitle(name2);
 	f_AA->Draw("HIST P");
-	f_AZ ->Draw("SAME");
-	f_AN ->Draw("SAME");
-	auto legend1 = new TLegend(0.1,0.1,0.2,0.9);
+	f_AZ ->Draw("HIST SAME P");
+	f_AN ->Draw("HIST SAME P");
+	auto legend1 = new TLegend(0.1,0.9,0.2,1);
   legend1->SetHeader("Frequencies:","C"); // option "C" allows to center the header
   legend1->AddEntry(f_AZ, "f(Z->Z-1)","p");
   legend1->AddEntry(f_AA,"f(A->A-1)","p");
@@ -195,7 +198,7 @@ TH2D *f_ZN_N=new TH2D("f_ZN_N", "f_ZN_N", 110, 0, 110, 160, 0 , 160);
 	const char *name3 =(char*) tmp_name3.c_str();		
 
 	TCanvas *c3 = new TCanvas(name3,name3,1500,1100);
-	gStyle->SetOptStat(11);
+	gStyle->SetOptStat(0);
 	c3->SetLogz();
 	c3->SetGrid();
 	f_NN->GetXaxis()->SetTitle("N");
@@ -215,9 +218,9 @@ TH2D *f_ZN_N=new TH2D("f_ZN_N", "f_ZN_N", 110, 0, 110, 160, 0 , 160);
 
 	f_NN->SetTitle(name3);
 	f_NN->Draw("HIST P");
-	f_NA ->Draw("SAME");
-	f_NZ ->Draw("SAME");
-	auto legend2 = new TLegend(0.1,0.1,0.2,0.9);
+	f_NA ->Draw("HIST SAME P");
+	f_NZ ->Draw("HIST SAME P");
+	auto legend2 = new TLegend(0.1,0.9,0.2,1);
   legend2->SetHeader("Frequencies:","C"); // option "C" allows to center the header
   legend2->AddEntry(f_NZ, "f(Z->Z-1)","p");
   legend2->AddEntry(f_NA,"f(A->A-1)","p");
@@ -231,11 +234,11 @@ TH2D *f_ZN_N=new TH2D("f_ZN_N", "f_ZN_N", 110, 0, 110, 160, 0 , 160);
 	f_NA->Write();
 	file3->Write();
 
-
+/*
 	TCanvas *c4 = new TCanvas("density2D","density2D",1500,1100);
 	gStyle->SetOptStat(11);
-	c3->SetLogz();
-	c3->SetGrid();
+	c4->SetLogz();
+	//c4->SetGrid();
 	f_ZN_N->GetXaxis()->SetTitle("Z");
 	f_ZN_N->GetYaxis()->SetTitle("N");
 	//c3->SetLogy();
@@ -243,24 +246,27 @@ TH2D *f_ZN_N=new TH2D("f_ZN_N", "f_ZN_N", 110, 0, 110, 160, 0 , 160);
 	f_ZN_N->GetYaxis()->SetNdivisions(160);
 
 	f_ZN_Z->SetMarkerColor(2);
+	f_ZN_Z->SetLineColor(2);
 	f_ZN_Z->SetMarkerSize(1.5);
 	f_ZN_Z->SetMarkerStyle(20);
 	f_ZN_A->SetMarkerColor(6);
+	f_ZN_A->SetLineColor(6);
   f_ZN_A->SetMarkerSize(1.5);
   f_ZN_A->SetMarkerStyle(20);
 	f_ZN_N->SetMarkerColor(4);
+	f_ZN_N->SetLineColor(4);
   f_ZN_N->SetMarkerSize(1.5);
   f_ZN_N->SetMarkerStyle(20);
 
-  f_ZN_Z->Draw("SURF");
-  f_ZN_Z->Draw("SURF SAME");
-  f_ZN_Z->Draw("SURF SAME");
-
+  f_ZN_Z->Draw("LEGO2Z ");
+  //f_ZN_A->Draw("same surf");
+  f_ZN_N->Draw("same surf");
+*/
    
 
    c->SaveAs("densityZ.png");
    c2->SaveAs("densityA.png");
    c3->SaveAs("densityN.png");
-   c4->SaveAs("3Ddensity.png");
+   //c4->SaveAs("3Ddensity.png");
 
 }
