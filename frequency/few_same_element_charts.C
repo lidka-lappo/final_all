@@ -65,15 +65,17 @@ cout<< "kup" <<AA[0]<<endl;
 			cout <<"OK"<<endl;
 
 			TH2D* hist;
-		//	hist = (TH2D*)file->Get("Z:N")->Clone();
-			hist = (TH2D*)file->Get("hist2D")->Clone();
+			if(OUT)
+				hist = (TH2D*)file->Get("Z:N")->Clone();
+			else	
+				hist = (TH2D*)file->Get("hist2D")->Clone();
 			//hist->Draw("colz");	
 			stringstream iso;
 			iso<<names[ZZ]<<AA;
 			string tmp_iso = iso.str();
 			const char *isotop =(char*) tmp_iso.c_str();
 
-			f_A[i]=new TH1D(isotop, isotop, 180,80, 260);
+			f_A[i]=new TH1D(isotop, isotop, 250, 0, 250);
 			f_N[i] = hist->ProjectionX();
 			f_Z[i] = hist->ProjectionY();
 			//f_N[i]->Draw("colz");
