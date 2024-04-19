@@ -22,7 +22,7 @@ void few_same_element_charts()
 	//int AA = 24;
 	int n =68; //ile isotopow//41
 	int ZZ = 53; 
-	int OUT = 1;
+	int OUT = 0;
 	//change 0 if IN, 1 if OUT
 	//////////////////////////////////////////////////////////////////////////
 	
@@ -30,7 +30,7 @@ void few_same_element_charts()
 	int AA[n]; //= 99//-140; //41
 	for(int i=0; i<n; i++)
 	{
-		AA[i]=106;
+		AA[i]=106+i;
 		empty[i]=0;
 	}
 
@@ -60,13 +60,13 @@ cout<< "kup" <<AA[0]<<endl;
 		cout<<"Reading File : "<<name<<endl;
 		cout<<endl;
 		file = TFile::Open(name);
-		if (!file || file->IsZombie()) { delete file; cout <<"There is no such isotop"<<endl; return; } //precaution
+		if (!file || file->IsZombie()) { delete file; cout <<"There is no such isotop"<<endl; empty[i] =1; } //precaution
 		else {
 			cout <<"OK"<<endl;
 
 			TH2D* hist;
-			hist = (TH2D*)file->Get("Z:N")->Clone();
-			//hist = (TH2D*)file->Get("hist2D")->Clone();
+		//	hist = (TH2D*)file->Get("Z:N")->Clone();
+			hist = (TH2D*)file->Get("hist2D")->Clone();
 			//hist->Draw("colz");	
 			stringstream iso;
 			iso<<names[ZZ]<<AA;
@@ -158,7 +158,7 @@ cout<< "kup" <<AA[0]<<endl;
 	
 
 	TCanvas *c2 = new TCanvas(name2,name2,1500,1100);
-	gStyle->SetOptStat(11);
+	gStyle->SetOptStat(0);
 	c2->SetLogz();
 	c2->SetGrid();
 	f_A[0]->GetXaxis()->SetTitle("A_in");
@@ -208,7 +208,7 @@ cout<< "kup" <<AA[0]<<endl;
 	
 
 	TCanvas *c3 = new TCanvas(name3,name3,1500,1100);
-	gStyle->SetOptStat(11);
+	gStyle->SetOptStat(0);
 	c3->SetLogz();
 	c3->SetGrid();
 	f_N[0]->GetXaxis()->SetTitle("N_in");
