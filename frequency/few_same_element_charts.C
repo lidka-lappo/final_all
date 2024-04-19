@@ -22,6 +22,9 @@ void few_same_elemet_charts()
 	//int AA = 24;
 	int n =14; //ile isotopow//41
 	int ZZ = 8; 
+	int OUT = 0;
+	//change 0 if IN, 1 if OUT
+	//////////////////////////////////////////////////////////////////////////
 	
 	int empty[n];
 	int AA[n]; //= 99//-140; //41
@@ -43,15 +46,21 @@ void few_same_elemet_charts()
 	
 	for(int i=0; i<n; i++)
 	{
-		stringstream tmpfoldername;
-		tmpfoldername <<"../to_the_product/ZNproduct"<<names[ZZ]<<AA[i]<<".root";
-		string tmp_folder_name = tmpfoldername.str();
-		const char *folder_name =(char*) tmp_folder_name.c_str();	
+		stringstream tmpname;
+		if(OUT)
+			tmpname <<"../to_the_product/ZNproduct"<<names[ZZ]<<AA<<".root";
+		else
+		{
+			//tmpname <<"../from_the_source/target"<<names[ZZ]<<AA<<".root";
+			tmpname <<"../from_the_source/2Dfragments"<<names[ZZ]<<AA<<".root";
+		}
+		string tmp_name = tmpname.str();
+		const char *name =(char*) tmp_name.c_str();	
 		TFile *file;
-		cout<<"Reading File : "<<folder_name<<endl;
+		cout<<"Reading File : "<<name<<endl;
 		cout<<endl;
-		file = TFile::Open(folder_name);
-		if (!file || file->IsZombie()) { delete file; cout <<"There is no such isotop"<<endl; empty[i]=1;} //precaution
+		file = TFile::Open(name);
+		if (!file || file->IsZombie()) { delete file; cout <<"There is no such isotop"<<endl; return; } //precaution
 		else {
 			cout <<"OK"<<endl;
 
@@ -84,12 +93,16 @@ void few_same_elemet_charts()
 	}
 	
 	stringstream tmpname1;
-	tmpname1<<names[ZZ]<<" :f(Z_in)";
+	if(OUT)
+		tmpname1<<"Frequency of formation: "<<names[ZZ]<<AA<<" dependent from target Z.root";
+	else
+		tmpname1<<"Frequency of formation: "<<names[ZZ]<<AA<<" dependent from product Z.root";
+
 	string tmp_name1 = tmpname1.str();
 	const char *name1 =(char*) tmp_name1.c_str();	
 
 	TCanvas *c = new TCanvas(name1,name1,1500,1100);
-	gStyle->SetOptStat(11);
+	gStyle->SetOptStat(0);
 	c->SetLogz();
 	c->SetGrid();
 	
@@ -132,11 +145,15 @@ void few_same_elemet_charts()
 	}
 	legend1->Draw();
 
-
 	stringstream tmpname2;
-	tmpname2<<names[ZZ]<<" :f(A_in)";
+	if(OUT)
+		tmpname2<<"Frequency of formation: "<<names[ZZ]<<AA<<" dependent from target A.root";
+	else
+		tmpname2<<"Frequency of formation: "<<names[ZZ]<<AA<<" dependent from product A.root";
+
 	string tmp_name2 = tmpname2.str();
-	const char *name2 =(char*) tmp_name2.c_str();		
+	const char *name2 =(char*) tmp_name2.c_str();	
+	
 
 	TCanvas *c2 = new TCanvas(name2,name2,1500,1100);
 	gStyle->SetOptStat(11);
@@ -179,10 +196,14 @@ void few_same_elemet_charts()
 
 
 	stringstream tmpname3;
-	tmpname3<<names[ZZ]<<"f(N_in)";
+	if(OUT)
+		tmpname3<<"Frequency of formation: "<<names[ZZ]<<AA<<" dependent from target N.root";
+	else
+		tmpname3<<"Frequency of formation: "<<names[ZZ]<<AA<<" dependent from product N.root";
 
 	string tmp_name3 = tmpname3.str();
 	const char *name3 =(char*) tmp_name3.c_str();		
+	
 
 	TCanvas *c3 = new TCanvas(name3,name3,1500,1100);
 	gStyle->SetOptStat(11);
