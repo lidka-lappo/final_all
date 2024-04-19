@@ -43,7 +43,7 @@ void few_same_element_charts()
 	TH1D *f_N[n];
 	TH1D *f_Z[n];
 	TH1D *f_A[n];
-cout<< "kup" <<AA[0]<<endl;	
+	cout<< "kup" <<AA[0]<<endl;	
 	for(int i=0; i<n; i++)
 	{
 		stringstream tmpname;
@@ -74,10 +74,21 @@ cout<< "kup" <<AA[0]<<endl;
 			iso<<names[ZZ]<<AA;
 			string tmp_iso = iso.str();
 			const char *isotop =(char*) tmp_iso.c_str();
-
-			f_A[i]=new TH1D(isotop, isotop, 250, 0, 250);
-			f_N[i] = hist->ProjectionX();
-			f_Z[i] = hist->ProjectionY();
+			hist = (TH2D*)file->Get("Z:N")->Clone();
+			if(OUT)
+			{
+				f_A[i]=new TH1D(isotop, isotop, 250, 0, 250);
+				f_N[i]=new TH1D(isotop, isotop, 150, 0, 150);
+				f_Z[i]=new TH1D(isotop, isotop, 150, 0, 150);
+			}
+			else
+			{
+				f_A[i]=new TH1D(isotop, isotop, 250, 0, 250);
+				f_N[i]=new TH1D(isotop, isotop, 150, 0, 150);
+				f_Z[i]=new TH1D(isotop, isotop, 150, 0, 150);
+			}
+			//f_N[i] = hist->ProjectionX();
+			//f_Z[i] = hist->ProjectionY();
 			//f_N[i]->Draw("colz");
 			for(int N=0; N<150; N++)
 			{
@@ -87,10 +98,14 @@ cout<< "kup" <<AA[0]<<endl;
 					int A = N+Z;
 					int f = hist->GetBinContent(N, Z);
 					f_A[i]->Fill(A, f);
+					f_Z[i]->Fill(Z, f);
+					f_N[i]->Fill(N, f);
 					//if(f!=0)
 					//	cout<<N <<" : "<< f<<endl;
 				}
 			}
+			delete file;
+			delete hist;
 
 		}
 	}
