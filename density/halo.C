@@ -139,12 +139,15 @@ void halo()
 				f_AA->Fill(AA, f1+f2);
 				f_ZA->Fill(ZZ, f1+f2);
 				f_NA->Fill(NN, f1+f2);*/
-
-				Double_t f = N_pn/N_pp*ZZ/NN
-
+				Double_t f;
+				if(N_pn!=0)
+				{
+				//f = (N_pn*ZZ)/(N_pp*NN);
+				f = (N_pp*NN)/(N_pn*ZZ);
 				f_ZN_A->Fill(NN, ZZ, f);
 				f_ZN_N->Fill(NN, ZZ, N_pn);
 				f_ZN_Z->Fill(NN, ZZ, N_pp);
+				}
 				//if(f!=0)
 				//	cout<<N <<" : "<< f<<endl;
 
@@ -214,6 +217,6 @@ void halo()
    //c->SaveAs("densityZevenodd.png");
    //c2->SaveAs("densityAevenodd.png");
    //c3->SaveAs("densityNevenodd.png");
-   c4->SaveAs("3DdensityAlog.png");
+   c4->SaveAs("phalo.png");
 
 }
